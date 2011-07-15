@@ -17,7 +17,19 @@ function errorOut(trans, code) {
   window.self.close();
 }
 
+
 var setupChannel = function(controller) {
+  if (navigator.id && navigator.id.channel)
+    setupNativeChannel(controller);
+  else
+    setupHTMLChannel(controller);
+}
+
+var setupNativeChannel = function(controller) {
+  navigator.id.channel.registerController(controller);
+}
+
+var setupHTMLChannel = function(controller) {
   var chan = Channel.build(
     {
       window: window.opener,
@@ -30,8 +42,6 @@ var setupChannel = function(controller) {
   chan.bind("getVerifiedEmail", function(trans, s) {
     trans.delayReturn(true);
 
-    var remoteOrigin = trans.origin.replace(/^.*:\/\//, "");
-
     function onsuccess(rv) {
       trans.complete(rv);
     }
@@ -40,7 +50,7 @@ var setupChannel = function(controller) {
       errorOut(trans, error);
     }
 
-    controller.getVerifiedEmail(remoteOrigin, onsuccess, onerror);
+    controller.getVerifiedEmail(trans.origin, onsuccess, onerror);
   });
 
   return chan;
