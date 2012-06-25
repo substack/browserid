@@ -2,7 +2,7 @@
 
 // a little node webserver designed to run the unit tests herein
 
-var   sys = require("sys"),
+var   util = require('util'),
      http = require("http"),
       url = require("url"),
      path = require("path"),

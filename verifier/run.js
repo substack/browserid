@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var   sys = require("sys"),
+var   util = require('util'),
      path = require("path"),
        fs = require("fs"),
   express = require("express");
